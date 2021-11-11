@@ -1,5 +1,4 @@
-import React, { Component, useState, useEffect } from "react";
-import logo from "./logo.svg";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import firebase from "firebase/compat/app";
 import { getFirestore, collection, addDoc, getDocs } from "firebase/firestore";
@@ -18,12 +17,15 @@ function App() {
   const [currentItem, setCurrentItem] = useState("");
   const [items, setItems] = useState([]);
 
-  useEffect(async () => {
-    const db = getFirestore();
-    const dbItems = await getDocs(collection(db, "items"));
-    let newItems = [];
-    dbItems.forEach((doc) => newItems.push(doc.data()));
-    setItems(newItems);
+  useEffect(() => {
+    async function fetchData() {
+      const db = getFirestore();
+      const dbItems = await getDocs(collection(db, "items"));
+      let newItems = [];
+      dbItems.forEach((doc) => newItems.push(doc.data()));
+      setItems(newItems);
+    }
+    fetchData();
   }, []);
 
   const handleChange = (e) => {
